@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oris Shih | 軟體測試驗證與品質保證專家</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter & Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#06b6d4',
+                            600: '#0284c7',
+                            900: '#0f172a',
+                            950: '#020617',
+                        }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 25px -5px rgba(6, 182, 212, 0.3)',
+                        'glow-lg': '0 0 40px -10px rgba(56, 189, 248, 0.4)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities & Theme Transitions */
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Light mode background */
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Dark mode background */
+        .dark body {
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+
+        /* Glassmorphism Panel - Light Mode */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        /* Glassmorphism Panel - Dark Mode */
+        .dark .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .dark .glass-nav {
+            background: rgba(11, 15, 25, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #0284c7 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .dark .bg-grid-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+        }
+
+        /* Music Pulse Animation */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .music-playing-ring {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-slate-900 bg-grid-pattern">
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo / Brand -->
+                <a href="#hero" class="flex items-center space-x-3 group">
+                    <img src="https://duk.tw/h5jvQk.jpg" alt="Oris Shih" class="w-10 h-10 rounded-xl object-cover border border-cyan-500/40 shadow-glow group-hover:scale-105 transition-transform" onerror="this.onerror=null; this.src='https://placehold.co/40x40/0f172a/38bdf8?text=OS'">
+                    <div>
+                        <span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white block leading-none">Oris Shih</span>
+                        <span class="text-xs text-cyan-600 dark:text-cyan-400 font-medium tracking-wider uppercase">QA & PM Specialist</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links & Interactive Switches -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <nav class="flex items-center space-x-6">
+                        <a href="#about" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">身份背景</a>
+                        <a href="#contributions" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">職責貢獻</a>
+                        <a href="#skills" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">專業技能</a>
+                        <a href="#philosophy" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">品質理念</a>
+                    </nav>
+
+                    <!-- Control Buttons Divider -->
+                    <div class="h-5 w-px bg-slate-300 dark:bg-slate-700"></div>
+
+                    <!-- Audio Player Toggle -->
+                    <button id="music-btn" onclick="toggleMusic()" aria-label="Toggle Background Music" class="relative group p-2.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 text-slate-700 dark:text-cyan-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all flex items-center space-x-2 text-xs font-medium px-3.5 border border-slate-300 dark:border-slate-700">
+                        <i id="music-icon" class="fa-solid fa-music text-slate-500 dark:text-slate-400 transition-colors"></i>
+                        <span id="music-text" class="text-slate-700 dark:text-slate-300">背景音樂</span>
+                    </button>
+
+                    <!-- Theme Switcher Toggle -->
+                    <button id="theme-btn" onclick="toggleTheme()" aria-label="Toggle Light/Dark Theme" class="p-2.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 text-amber-500 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-slate-700 transition-all border border-slate-300 dark:border-slate-700">
+                        <i id="theme-icon" class="fa-solid fa-sun text-base"></i>
+                    </button>
+
+                    <a href="#contact" class="px-5 py-2.5 text-sm font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full hover:shadow-glow transition-all duration-300 hover:scale-105">
+                        交流與合作
+                    </a>
+                </div>
+
+                <!-- Mobile Header Controls -->
+                <div class="md:hidden flex items-center space-x-2">
+                    <!-- Mobile Music Toggle -->
+                    <button id="mobile-music-btn" onclick="toggleMusic()" aria-label="Toggle Background Music" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-200/70 dark:bg-slate-800/70 border border-slate-300 dark:border-slate-700">
+                        <i id="mobile-music-icon" class="fa-solid fa-music text-sm"></i>
+                    </button>
+
+                    <!-- Mobile Theme Toggle -->
+                    <button id="mobile-theme-btn" onclick="toggleTheme()" aria-label="Toggle Light/Dark Theme" class="p-2 rounded-lg text-amber-500 dark:text-amber-400 bg-slate-200/70 dark:bg-slate-800/70 border border-slate-300 dark:border-slate-700">
+                        <i id="mobile-theme-icon" class="fa-solid fa-sun text-sm"></i>
+                    </button>
+
+                    <!-- Mobile Hamburger Button -->
+                    <button id="mobile-menu-btn" type="button" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800/80 focus:outline-none" aria-label="Toggle navigation">
+                        <i class="fa-solid fa-bars text-lg" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-slate-200 dark:border-slate-800/80 transition-all duration-300">
+            <div class="px-4 pt-3 pb-6 space-y-3">
+                <a href="#about" class="mobile-link block px-4 py-3 rounded-lg text-base font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-cyan-500 dark:hover:text-cyan-400">身份背景</a>
+                <a href="#contributions" class="mobile-link block px-4 py-3 rounded-lg text-base font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-cyan-500 dark:hover:text-cyan-400">職責貢獻</a>
+                <a href="#skills" class="mobile-link block px-4 py-3 rounded-lg text-base font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-cyan-500 dark:hover:text-cyan-400">專業技能</a>
+                <a href="#philosophy" class="mobile-link block px-4 py-3 rounded-lg text-base font-medium text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-cyan-500 dark:hover:text-cyan-400">品質理念</a>
+                <a href="#contact" class="mobile-link block text-center px-4 py-3 mt-2 rounded-xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-emerald-400">交流與合作</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Background Music Audio Element -->
+    <audio id="bg-music" loop preload="none">
+        <source src="https://img.ai365.fans/artworks/c2c06891-79c5-4d6b-a759-2ab67914ab8d/cfpw64lwvy5.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-28 pb-16 md:pt-40 md:pb-28 overflow-hidden min-h-[90vh] flex items-center">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[300px] h-[300px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Column -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
+                        <div class="relative group">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-300"></div>
+                            <img src="https://duk.tw/h5jvQk.jpg" alt="Oris Shih" class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-2xl" onerror="this.onerror=null; this.src='https://placehold.co/128x128/0f172a/38bdf8?text=Oris+Shih'">
+                        </div>
+                        <div class="space-y-2 text-center sm:text-left">
+                            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-950/60 border border-cyan-400/30 text-cyan-800 dark:text-cyan-300 text-xs sm:text-sm font-medium">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500 animate-ping"></span>
+                                <span class="w-2 h-2 rounded-full bg-cyan-500 -ml-4"></span>
+                                <span>資深軟體品質保證 & 專案管理專家</span>
+                            </div>
+                            <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium tracking-wide">
+                                <i class="fa-solid fa-circle-check text-emerald-500 dark:text-emerald-400 mr-1.5"></i>19+ 年品保實務 • 4 年 PM 經驗
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+                        守護產品體驗的最前線 <br class="hidden sm:inline"/>
+                        以細節鑄就 <span class="text-gradient">卓越品質</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                        深耕軟體測試驗證與品質保證領域近 <span class="text-cyan-600 dark:text-cyan-400 font-semibold">19 年</span>，並具備 <span class="text-emerald-600 dark:text-emerald-400 font-semibold">4 年專案管理</span> 的問題收斂經驗。歷經智慧型手機與筆記型電腦兩大消費性電子主力產品線，為品質把關。
+                    </p>
+
+                    <!-- Hero Call to Actions -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:shadow-glow transition-all duration-300 text-center hover:-translate-y-0.5">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>探索合作可能性
+                        </a>
+                        <a href="#contributions" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 glass-panel hover:bg-slate-200/80 dark:hover:bg-slate-800 transition-all text-center">
+                            <i class="fa-solid fa-compass mr-2"></i>瞭解實務貢獻
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right Column / Stats Cards -->
+                <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
+                    <!-- Stat Card 1 -->
+                    <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-cyan-500/50 transition-all duration-300">
+                        <div class="absolute right-4 top-4 text-slate-300 dark:text-slate-700/40 text-5xl group-hover:text-cyan-500/20 transition-colors">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-cyan-600 dark:text-cyan-400 mb-1">19+ <span class="text-lg text-slate-500 dark:text-slate-300 font-normal">年</span></div>
+                        <h2 class="text-base font-semibold text-slate-900 dark:text-white mb-1">軟體測試驗證與品質保證</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">涵蓋可信度、相容性、效能、壓力與功能全面測試</p>
+                    </div>
+
+                    <!-- Stat Card 2 -->
+                    <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/50 transition-all duration-300">
+                        <div class="absolute right-4 top-4 text-slate-300 dark:text-slate-700/40 text-5xl group-hover:text-emerald-500/20 transition-colors">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 mb-1">4 <span class="text-lg text-slate-500 dark:text-slate-300 font-normal">年</span></div>
+                        <h2 class="text-base font-semibold text-slate-900 dark:text-white mb-1">專案管理問題收斂實務</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">精準追蹤跨部門議題，協助團隊高效推進與決策</p>
+                    </div>
+
+                    <!-- Stat Card 3 -->
+                    <div class="glass-panel p-6 rounded-2xl sm:col-span-2 lg:col-span-1 relative overflow-hidden group hover:border-blue-500/50 transition-all duration-300">
+                        <div class="absolute right-4 top-4 text-slate-300 dark:text-slate-700/40 text-5xl group-hover:text-blue-500/20 transition-colors">
+                            <i class="fa-solid fa-laptop-mobile"></i>
+                        </div>
+                        <div class="text-3xl sm:text-4xl font-extrabold text-blue-600 dark:text-blue-400 mb-1">2 <span class="text-lg text-slate-500 dark:text-slate-300 font-normal">大</span></div>
+                        <h2 class="text-base font-semibold text-slate-900 dark:text-white mb-1">消費性電子主力產品經驗</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">智慧型手機 & 筆記型電腦研發全階段品質把關</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section (身份背景) -->
+    <section id="about" class="py-20 relative bg-slate-100/60 dark:bg-slate-950/50 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-2">BACKGROUND</h2>
+                <p class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">身份背景與專業歷程</p>
+                <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-emerald-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Academic & Technical Root -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-500 dark:text-cyan-400 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">資工背景與品質基石</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                            資訊工程系學士畢業，具備紮實的系統運作邏輯與技術思維。投身軟體品質領域近 19 年，能從技術底層剖析問題根因，而非僅停留在表面現象。
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-cyan-600 dark:text-cyan-400 font-medium">
+                        <i class="fa-solid fa-check-circle mr-1"></i> 技術思維 + 品保邏輯
+                    </div>
+                </div>
+
+                <!-- Product Experience -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">兩大主力產品線實戰</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                            職涯深耕於消費性電子產業的核心產品——智慧型手機與筆記型電腦。熟悉從開發早期、中期試產至量產發布的每個重要 stage gate 品質檢驗標準。
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                        <i class="fa-solid fa-check-circle mr-1"></i> 手機 & 筆電全週期驗證
+                    </div>
+                </div>
+
+                <!-- Hub Role -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 dark:text-purple-400 flex items-center justify-center text-2xl mb-6">
+                            <i class="fa-solid fa-diagram-project"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">關鍵鏈結與問題收斂</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                            長期站在產品品質最前線，具備 4 年專案管理經驗。是連結 <span class="text-slate-900 dark:text-white font-semibold">研發團隊</span>、<span class="text-slate-900 dark:text-white font-semibold">生產端</span> 與 <span class="text-slate-900 dark:text-white font-semibold">消費者真實體驗</span> 之間不可或缺的橋樑。
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-purple-600 dark:text-purple-400 font-medium">
+                        <i class="fa-solid fa-check-circle mr-1"></i> 研發/生產/體驗三方橋樑
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contributions Section (職責貢獻) -->
+    <section id="contributions" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-2">EXPERIENCE & IMPACT</h2>
+                <p class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">關鍵職責與核心貢獻</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-3">全方位系統軟體驗證，將極致的品保測試融入真實使用情境</p>
+                <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-emerald-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Card 1: Smartphone Field Testing -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-cyan-500/40 transition-all duration-300">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-500 dark:text-cyan-400 text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-cyan-600 dark:text-cyan-400 tracking-wider uppercase">Smartphone QA</span>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">智慧型手機 - 大規模實地情境驗證</h3>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+                        主導與執行極具挑戰性的戶外真實場域測試，突破實驗室環境的局限性，深入探索極端條件下的軟體與訊號穩定度：
+                    </p>
+
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 mr-3 mt-0.5"><i class="fa-solid fa-building text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">高密度建築遮蔽環境測試</strong>
+                                模擬複雜都市峽谷、室內死角與地下空間，驗證連線穩定度與異常自動復原機制。
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 mr-3 mt-0.5"><i class="fa-solid fa-car-side text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">高速公路移動穩定度測試</strong>
+                                於高速行駛動態環境下，驗證基地台切換（Handover）、數據傳輸續航與定位精準度。
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 mr-3 mt-0.5"><i class="fa-solid fa-triangle-exclamation text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">提前排除潛在風險</strong>
+                                精準挖掘出僅在真實情境中浮現的邊緣案例（Edge Cases），顯著降低出貨後的潛在客訴與退貨率。
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="inline-flex items-center text-xs font-semibold text-cyan-800 dark:text-cyan-300 bg-cyan-100 dark:bg-cyan-950/80 px-4 py-2 rounded-lg border border-cyan-300 dark:border-cyan-800/50">
+                        <i class="fa-solid fa-shield-check mr-2 text-cyan-500 dark:text-cyan-400"></i> 成效：防患於未然，守護上市前使用者體驗
+                    </div>
+                </div>
+
+                <!-- Card 2: Laptop SW Validation -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group hover:border-emerald-500/40 transition-all duration-300">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 dark:text-emerald-400 text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-laptop"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">Laptop SW QA</span>
+                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">筆記型電腦 - 全面性系統品質把關</h3>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+                        負責筆記型電腦產品線系統軟體的全面驗證，於開發生命週期的每一個關鍵節點築起嚴密的品質防線：
+                    </p>
+
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600 dark:text-slate-300">
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5"><i class="fa-solid fa-rotate text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">全階段系統功能與壓力測試</strong>
+                                涵蓋 Reliability (可信度)、Compatibility (相容性)、Performance (效能) 與 Stress (壓力測試)。
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5"><i class="fa-solid fa-bug text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">嚴重問題早期攔截與協同處理</strong>
+                                於產品開發早期抓出致命 Bug，並協同研發工程師快速定位問題根因（Root Cause）。
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="p-1 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5"><i class="fa-solid fa-award text-xs"></i></span>
+                            <div>
+                                <strong class="text-slate-900 dark:text-white block mb-0.5">維護出貨品質與品牌信譽</strong>
+                                嚴格掌控 Gate 出貨標準，確保交付給市場與客戶的產品具備最高水準的穩定性。
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="inline-flex items-center text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/80 px-4 py-2 rounded-lg border border-emerald-300 dark:border-emerald-800/50">
+                        <i class="fa-solid fa-thumbs-up mr-2 text-emerald-500 dark:text-emerald-400"></i> 成效：築起品質防線，維護品牌市場聲譽
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section (專業技能) -->
+    <section id="skills" class="py-20 relative bg-slate-100/60 dark:bg-slate-950/50 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-2">CORE COMPETENCIES</h2>
+                <p class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">專業技能與核心領域</p>
+                <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-emerald-400 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Skill 1 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-cyan-500/40 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-500 dark:text-cyan-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-vial-circle-check"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">系統軟體測試驗證</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">掌握多維度品保測試方法學與實務經驗</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700">可信度測試 (Reliability)</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700">相容性測試 (Compatibility)</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700">效能測試 (Performance)</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700">壓力測試 (Stress)</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-300 dark:border-slate-700">功能測試 (Functional)</span>
+                    </div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-bug-slash"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">缺陷追蹤與系統管理</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">標準化缺陷生命週期管控與紀錄</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-slate-300 dark:border-slate-700">JIRA</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-slate-300 dark:border-slate-700">Defect Tracking</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-slate-300 dark:border-slate-700">Issue Life-cycle</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 border border-slate-300 dark:border-slate-700">根因分析記錄</span>
+                    </div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-purple-500/40 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-500 dark:text-purple-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-people-group"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">跨部門協作與溝通</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">高效促進跨單位合作與認知一致</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-purple-700 dark:text-purple-300 border border-slate-300 dark:border-slate-700">內部支援整合</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-purple-700 dark:text-purple-300 border border-slate-300 dark:border-slate-700">跨部門協調</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-purple-700 dark:text-purple-300 border border-slate-300 dark:border-slate-700">研發/生產對接</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-purple-700 dark:text-purple-300 border border-slate-300 dark:border-slate-700">衝突溝通解決</span>
+                    </div>
+                </div>
+
+                <!-- Skill 4 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-amber-500/40 transition-all">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-500 dark:text-amber-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-chart-line-up font-bold"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">向上管理與風險呈報</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">透明化的進度揭露與決策輔助</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-slate-300 dark:border-slate-700">進度狀態匯報</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-slate-300 dark:border-slate-700">風險評估與預警</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-slate-300 dark:border-slate-700">主管決策支援</span>
+                    </div>
+                </div>
+
+                <!-- Skill 5 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-500/40 transition-all sm:col-span-2 lg:col-span-2">
+                    <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-500 dark:text-blue-400 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">專案管理與問題收斂 (4 年實戰)</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">具備系統化的問題推進、優先級分類與項目平穩落地的管理能力</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-blue-700 dark:text-blue-300 border border-slate-300 dark:border-slate-700">Problem Convergence</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-blue-700 dark:text-blue-300 border border-slate-300 dark:border-slate-700">Issue Triage</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-blue-700 dark:text-blue-300 border border-slate-300 dark:border-slate-700">專案卡點推進</span>
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-200/80 dark:bg-slate-800 text-blue-700 dark:text-blue-300 border border-slate-300 dark:border-slate-700">里程碑檢視</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section (品質理念) -->
+    <section id="philosophy" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-emerald-500/10 dark:from-cyan-900/20 dark:via-blue-900/20 dark:to-emerald-900/20 pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-panel p-8 sm:p-14 rounded-3xl border border-cyan-500/30 text-center shadow-glow-lg">
+                <i class="fa-solid fa-quote-left text-4xl sm:text-5xl text-cyan-500/40 dark:text-cyan-400/40 mb-6 block"></i>
+                
+                <p class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-relaxed tracking-tight mb-8">
+                    〝 好的品質，來自對<span class="text-gradient">細節的堅持</span>與對<span class="text-gradient font-black">使用者情境的真實理解</span> 〞
+                </p>
+
+                <div class="inline-block h-1 w-20 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full mb-4"></div>
+                <div class="text-base font-semibold text-slate-800 dark:text-slate-200">Oris Shih</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">23 年累積之軟體品質與管理信仰</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section (交流與合作) -->
+    <section id="contact" class="py-20 relative bg-slate-100/80 dark:bg-slate-950/80 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto glass-panel p-8 sm:p-12 rounded-3xl border border-slate-200 dark:border-slate-800 relative">
+                
+                <div class="text-center mb-10">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                        <i class="fa-solid fa-circle text-[8px] animate-pulse mr-1.5"></i> 開放專業交流 & 跨產業合作機會
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mt-4">與 Oris 展開對話</h2>
+                    <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mt-3 max-w-xl mx-auto">
+                        期待在此與更多產業夥伴交流品保與測試領域的實務經驗，也樂於探索跨產業的合作與職涯發展機會。
+                    </p>
+                </div>
+
+                <!-- Interactive Quick Action Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-10">
+                    <!-- Copy Email Button -->
+                    <button onclick="copyToClipboard('oris.shih.qa@example.com', '郵件地址已複製！')" class="flex items-center justify-center space-x-3 p-4 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300/80 dark:hover:bg-slate-700/80 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white transition-all group">
+                        <i class="fa-solid fa-envelope text-cyan-600 dark:text-cyan-400 text-xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-sm font-medium">複製電子郵件</span>
+                    </button>
+
+                    <!-- LinkedIn Profile Link -->
+                    <a href="https://www.linkedin.com/in/orisshih/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center space-x-3 p-4 rounded-xl bg-slate-200/80 dark:bg-slate-800/80 hover:bg-slate-300/80 dark:hover:bg-slate-700/80 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-white transition-all group">
+                        <i class="fa-brands fa-linkedin text-blue-600 dark:text-blue-400 text-xl group-hover:scale-110 transition-transform"></i>
+                        <span class="text-sm font-medium">LinkedIn 個人檔案</span>
+                    </a>
+                </div>
+
+                <!-- Message Mock Form -->
+                <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-4 max-w-2xl mx-auto pt-6 border-t border-slate-200 dark:border-slate-800">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="contact-name" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">您的姓名 / 稱呼</label>
+                            <input type="text" id="contact-name" required placeholder="例如：王經理 / Alex" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors">
+                        </div>
+                        <div>
+                            <label for="contact-email" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">您的聯絡信箱</label>
+                            <input type="email" id="contact-email" required placeholder="name@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="contact-message" class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">交流或合作訊息</label>
+                        <textarea id="contact-message" rows="4" required placeholder="請簡述您的交流想法或合作構想..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:shadow-glow transition-all">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>發送訊息
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-slate-200 dark:border-slate-900 bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-500 text-xs text-center transition-colors">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© <span id="year"></span> Oris Shih. All rights reserved.</p>
+            <p class="mt-1 text-slate-400 dark:text-slate-600">軟體測試驗證 • 專案管理 • 品質保證</p>
+        </div>
+    </footer>
+
+    <!-- Custom Toast Notification Box -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-5 py-3.5 rounded-xl border border-cyan-500/50 flex items-center space-x-3 shadow-glow pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-500 dark:text-emerald-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium text-slate-900 dark:text-white">訊息已傳送</span>
+    </div>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // Dynamic Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            });
+        });
+
+        // Toast Notification Function
+        function showToast(message, iconClass = 'fa-circle-check text-emerald-500 dark:text-emerald-400') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMessage.textContent = message;
+            toastIcon.className = `fa-solid ${iconClass} text-lg`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard(text, successMsg) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast(successMsg, 'fa-copy text-cyan-500 dark:text-cyan-400');
+            } catch (err) {
+                showToast('複製失敗，請手動複製', 'fa-triangle-exclamation text-amber-500');
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        // Form Submit Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showToast(`感謝 ${name} 的來信！訊息已模擬傳送。`, 'fa-paper-plane text-cyan-500 dark:text-cyan-400');
+            document.getElementById('contact-form').reset();
+        }
+
+        // ==========================================
+        // 1. Dark/Light Theme Switcher Logic
+        // ==========================================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI(false);
+            } else if (savedTheme === 'dark' || prefersDark) {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+            showToast(isDark ? '已切換至深色主題 🌙' : '已切換至淺色主題 ☀️', isDark ? 'fa-moon text-cyan-400' : 'fa-sun text-amber-500');
+        }
+
+        function updateThemeUI(isDark) {
+            const themeIcon = document.getElementById('theme-icon');
+            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+
+            if (isDark) {
+                themeIcon.className = 'fa-solid fa-sun text-amber-400';
+                mobileThemeIcon.className = 'fa-solid fa-sun text-amber-400';
+            } else {
+                themeIcon.className = 'fa-solid fa-moon text-slate-700';
+                mobileThemeIcon.className = 'fa-solid fa-moon text-slate-700';
+            }
+        }
+
+        // ==========================================
+        // 2. Background Music Controller Logic
+        // ==========================================
+        let isMusicPlaying = false;
+        const bgMusic = document.getElementById('bg-music');
+
+        function toggleMusic() {
+            const musicBtn = document.getElementById('music-btn');
+            const musicIcon = document.getElementById('music-icon');
+            const musicText = document.getElementById('music-text');
+            const mobileMusicIcon = document.getElementById('mobile-music-icon');
+
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                
+                musicIcon.className = 'fa-solid fa-music text-slate-500 dark:text-slate-400';
+                mobileMusicIcon.className = 'fa-solid fa-music text-slate-500 dark:text-slate-400';
+                musicText.textContent = '背景音樂';
+                musicBtn.classList.remove('border-cyan-400', 'shadow-glow');
+                showToast('背景音樂已暫停 🔇', 'fa-volume-xmark text-slate-400');
+            } else {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicIcon.className = 'fa-solid fa-compact-disc fa-spin text-cyan-500 dark:text-cyan-400';
+                    mobileMusicIcon.className = 'fa-solid fa-compact-disc fa-spin text-cyan-500 dark:text-cyan-400';
+                    musicText.textContent = '音樂播放中';
+                    musicBtn.classList.add('border-cyan-400');
+                    showToast('開始播放背景音樂 🎵', 'fa-music text-cyan-400');
+                }).catch(err => {
+                    showToast('無法自動播放音樂，請再試一次', 'fa-triangle-exclamation text-amber-500');
+                });
+            }
+        }
+
+        // Initialize Theme on Load
+        initTheme();
+    </script>
+</body>
+</html>
